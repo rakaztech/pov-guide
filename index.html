@@ -165,13 +165,87 @@ footer{text-align:center;padding:30px 16px 24px;color:var(--muted);font-size:13p
 .like.pop{animation:likePop .45s cubic-bezier(.2,.8,.2,1)}
 @keyframes likePop{0%{transform:scale(1)}40%{transform:scale(1.45)}100%{transform:scale(1)}}
 @media (max-width:760px){.like{position:absolute;top:8px;left:34px;width:28px;height:28px}.like svg{width:17px;height:17px}}
+/* landmarks v1 */
+.lm{position:absolute;inset:0;z-index:-1;pointer-events:none;color:#f5f2ea}
+.lm-i{position:absolute;fill:none;stroke:currentColor;stroke-width:1.3;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+.lm-i *{vector-effect:non-scaling-stroke}
+.lm1{opacity:.3}
+.lm1 .sky{position:absolute;left:0;right:0;bottom:50px;height:190px;display:flex;align-items:flex-end;justify-content:center;gap:2.2%;padding:0 3%;border-bottom:1px solid rgba(245,242,234,.6)}
+.lm1 .lm-i{position:static;height:62%;width:auto;flex:0 0 auto}
+.lm1 .lm-i.t{height:96%}.lm1 .lm-i.xl{height:100%}.lm1 .lm-i.s{height:52%}.lm1 .lm-i.w{height:44%}
+.hero{padding-bottom:230px}
+@media (max-width:760px){.lm1 .sky{height:120px;gap:1.5%}.lm1 .lm-i.w,.lm1 .lm-i.s:last-child{display:none}.hero{padding-bottom:190px}}
 </style>
 </head>
 <body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="lm-kw-towers" viewBox="0 0 130 250">
+<path d="M60 250 L63 22 L65 4 L67 22 L70 250"/>
+<circle cx="65" cy="92" r="27"/>
+<ellipse cx="65" cy="92" rx="27" ry="7"/>
+<path d="M41 80 Q65 86 89 80 M41 104 Q65 98 89 104"/>
+<circle cx="65" cy="44" r="12"/>
+<ellipse cx="65" cy="44" rx="12" ry="3.5"/>
+<path d="M99 250 L101.5 92 L103 72 L104.5 92 L107 250"/>
+<circle cx="103" cy="148" r="19"/>
+<ellipse cx="103" cy="148" rx="19" ry="5"/>
+<path d="M86 140 Q103 144 120 140"/>
+<path d="M24 250 L26.5 118 L27.5 96 L28.5 118 L31 250"/>
+<path d="M8 250 H124"/>
+</symbol><symbol id="lm-liberation" viewBox="0 0 100 300">
+<path d="M50 2 V42"/>
+<path d="M47.5 62 L48.8 42 H51.2 L52.5 62"/>
+<path d="M46.5 50 H53.5"/>
+<path d="M36 74 Q38 62 50 60 Q62 62 64 74"/>
+<path d="M36 74 C25 77 24 89 31 93 H69 C76 89 75 77 64 74 Z"/>
+<path d="M36 77 Q33 84 36 91 M43 76 Q42 84 43 92 M50 75.5 V92.5 M57 76 Q58 84 57 92 M64 77 Q67 84 64 91"/>
+<path d="M42 93 V98 M58 93 V98"/>
+<path d="M30 98 H70 Q79 101.5 72 106 H28 Q21 101.5 30 98 Z"/>
+<path d="M30 106 L43.5 124 M70 106 L56.5 124 M39 106 L46 122 M61 106 L54 122"/>
+<path d="M43.5 110 L35 288 M56.5 110 L65 288"/>
+<path d="M47.5 126 L45 288 M52.5 126 L55 288"/>
+<path d="M35 288 Q34 294 27 297 H73 Q66 294 65 288"/>
+<path d="M18 297 H82"/>
+</symbol><symbol id="lm-hamra" viewBox="0 0 100 270">
+<path d="M14 268 L14 30 Q14 16 30 13 L80 6 Q86 6 86 14 L88 268"/>
+<path d="M80 6 C52 70 92 150 60 268"/>
+<path d="M14 70 H70 M14 120 H68 M14 170 H70 M14 220 H66"/>
+<path d="M6 268 H96"/>
+</symbol><symbol id="lm-mosque" viewBox="0 0 170 220">
+<path d="M20 218 V128 H126 V218"/>
+<path d="M44 128 C44 92 58 78 73 72 C88 78 102 92 102 128"/>
+<path d="M73 72 V56"/><circle cx="73" cy="52" r="4"/>
+<path d="M40 218 V188 Q40 172 52 172 Q64 172 64 188 V218 M82 218 V188 Q82 172 94 172 Q106 172 106 188 V218"/>
+<path d="M28 150 H118"/>
+<path d="M140 218 V60 H154 V218"/>
+<path d="M136 92 H158 M136 140 H158"/>
+<path d="M140 60 L147 30 L154 60"/><path d="M147 30 V18"/>
+<path d="M10 218 H164"/>
+</symbol><symbol id="lm-seif" viewBox="0 0 90 220">
+<path d="M18 218 V70 H72 V218"/>
+<path d="M18 70 V60 H26 V68 H34 V60 H42 V68 H48 V60 H56 V68 H64 V60 H72 V70"/>
+<circle cx="45" cy="100" r="13"/><path d="M45 100 V91 M45 100 L51 104"/>
+<path d="M30 60 C30 40 38 32 45 28 C52 32 60 40 60 60"/>
+<path d="M45 28 V14"/><circle cx="45" cy="11" r="3"/>
+<path d="M35 218 V160 Q35 146 45 146 Q55 146 55 160 V218"/>
+<path d="M10 218 H80"/>
+</symbol><symbol id="lm-dhow" viewBox="0 0 210 150">
+<path d="M14 92 L46 98 H170 L196 80 L186 104 Q170 122 106 122 Q46 122 26 104 Z"/>
+<path d="M46 98 V108 M170 98 V110"/>
+<path d="M104 98 V10"/>
+<path d="M52 88 Q100 72 168 22 L108 14 Q86 52 52 88 Z"/>
+<path d="M60 92 L190 6"/>
+<path d="M4 134 Q20 126 36 134 T68 134 T100 134 T132 134 T164 134 T196 134"/>
+</symbol><symbol id="lm-palm" viewBox="0 0 120 200">
+<path d="M58 198 C60 150 54 110 62 70"/>
+<path d="M54 160 H62 M55 130 H62 M57 100 H64"/>
+<path d="M62 70 C40 50 20 56 6 74 M62 70 C44 40 30 30 14 30 M62 70 C66 40 80 22 98 18 M62 70 C82 52 102 56 116 72 M62 70 C60 46 54 30 44 16"/>
+<path d="M40 198 H84"/>
+</symbol><pattern id="lm-sadu" width="48" height="24" patternUnits="userSpaceOnUse"><path d="M0 12 L12 2 L24 12 L36 2 L48 12 M0 12 L12 22 L24 12 L36 22 L48 12" fill="none" stroke="currentColor" stroke-width="1"/><path d="M24 7 L29 12 L24 17 L19 12 Z" fill="none" stroke="currentColor" stroke-width="1"/></pattern></defs></svg>
 <div class="progress" id="progress"></div>
 
 <header class="hero">
   <div class="blob b1"></div><div class="blob b2"></div><div class="blob b3"></div><div class="grain"></div>
+  <div class="lm lm1"><div class="sky"><svg class="lm-i s" style="" viewBox="0 0 120 200" aria-hidden="true"><use href="#lm-palm"/></svg><svg class="lm-i " style="" viewBox="0 0 90 220" aria-hidden="true"><use href="#lm-seif"/></svg><svg class="lm-i " style="" viewBox="0 0 170 220" aria-hidden="true"><use href="#lm-mosque"/></svg><svg class="lm-i t" style="" viewBox="0 0 100 300" aria-hidden="true"><use href="#lm-liberation"/></svg><svg class="lm-i xl" style="" viewBox="0 0 130 250" aria-hidden="true"><use href="#lm-kw-towers"/></svg><svg class="lm-i t" style="" viewBox="0 0 100 270" aria-hidden="true"><use href="#lm-hamra"/></svg><svg class="lm-i w" style="" viewBox="0 0 210 150" aria-hidden="true"><use href="#lm-dhow"/></svg><svg class="lm-i s" style="" viewBox="0 0 120 200" aria-hidden="true"><use href="#lm-palm"/></svg></div></div>
   <div class="hero-inner">
     <div>
       <span class="tag"><i class="dot"></i> دليل يتحدّث باستمرار</span>
