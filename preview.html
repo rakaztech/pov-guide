@@ -307,7 +307,25 @@ footer{text-align:center;padding:30px 16px 24px;color:var(--muted);font-size:13p
 .sec-head.bn{min-height:210px}
 @media (max-width:520px){.sec-head.bn{min-height:180px}}
 @media (prefers-reduced-motion:reduce){.bn-img.on{animation:none!important}}
-.maphint{display:flex;align-items:center;justify-content:center;gap:7px;margin:14px auto 0;padding:6px 10px;background:none;border:0;color:inherit;opacity:.82;font:inherit;font-size:14px;cursor:pointer;-webkit-tap-highlight-color:transparent}.maphint span{border-bottom:1px dashed currentColor;padding-bottom:2px}.maphint svg{animation:mhb 1.800s ease-in-out infinite}@keyframes mhb{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}@media (prefers-reduced-motion:reduce){.maphint svg{animation:none}}.nm small .tg{font-style:normal;font-weight:700;font-size:11.5px;color:#fff;background:var(--gold);padding:2px 9px;border-radius:999px;margin-inline-end:3px;white-space:nowrap}</style>
+.maphint{display:flex;align-items:center;justify-content:center;gap:7px;margin:14px auto 0;padding:6px 10px;background:none;border:0;color:inherit;opacity:.82;font:inherit;font-size:14px;cursor:pointer;-webkit-tap-highlight-color:transparent}.maphint span{border-bottom:1px dashed currentColor;padding-bottom:2px}.maphint svg{animation:mhb 1.800s ease-in-out infinite}@keyframes mhb{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}@media (prefers-reduced-motion:reduce){.maphint svg{animation:none}}.nm small .tg{font-style:normal;font-weight:700;font-size:11.5px;color:#fff;background:var(--gold);padding:2px 9px;border-radius:999px;margin-inline-end:3px;white-space:nowrap}#pl{position:fixed;inset:0;z-index:900;display:none}#pl.open{display:block}
+.pl-bg{position:absolute;inset:0;background:rgba(20,26,18,.55);animation:plf .25s ease}
+.pl-sheet{position:absolute;left:0;right:0;bottom:0;max-height:92vh;overflow:auto;background:var(--cream,#f5f2ea);border-radius:22px 22px 0 0;padding:20px 16px 26px;max-width:560px;margin:0 auto;animation:plu .32s cubic-bezier(.2,.8,.2,1);-webkit-overflow-scrolling:touch}
+@keyframes plf{from{opacity:0}}@keyframes plu{from{transform:translateY(40px);opacity:0}}
+.pl-x{position:absolute;top:12px;left:12px;width:36px;height:36px;border-radius:50%;border:0;background:rgba(0,0,0,.07);display:grid;place-items:center;cursor:pointer;color:inherit}
+.pl-head{display:flex;align-items:center;gap:13px;padding-left:44px}
+.pl-lg{flex:none;width:64px;height:64px;border-radius:50%;overflow:hidden;background:#fff;display:grid;place-items:center;border:1px solid rgba(0,0,0,.08);font-weight:700;font-size:20px}
+.pl-lg img{width:100%;height:100%;object-fit:cover}
+.pl-head h3{font-size:19px;line-height:1.35;margin:0}.pl-head h3.ltr{direction:ltr;text-align:right;font-family:"Sora"}
+.pl-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.pl-meta span{font-size:12px;padding:3px 10px;border-radius:999px;background:rgba(0,0,0,.06)}
+.pl-meta span.g{background:var(--gold);color:#fff;font-weight:700}
+.pl-acts{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:16px 0 14px}
+.pl-acts a,.pl-acts button{display:flex;align-items:center;justify-content:center;gap:7px;padding:12px 8px;border-radius:14px;border:1px solid rgba(0,0,0,.12);background:#fff;color:inherit;font:inherit;font-size:14.5px;font-weight:700;text-decoration:none;cursor:pointer}
+.pl-acts .pri{background:var(--olive);color:#f5f2ea;border-color:transparent}
+.pl-acts .full{grid-column:1/-1}
+.pl-ig h4{font-size:14px;margin:4px 0 9px;opacity:.75;font-weight:600}
+.pl-ig iframe{width:100%;border:0;border-radius:14px;background:#fff;display:block}
+@media (prefers-reduced-motion:reduce){.pl-bg,.pl-sheet{animation:none}}</style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="lm-kw-towers" viewBox="0 0 130 250">
@@ -448,6 +466,12 @@ footer{text-align:center;padding:30px 16px 24px;color:var(--muted);font-size:13p
 
 
 <button type="button" class="mapfab" data-openmap="fab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M9 4 3 6.5v13.5l6-2.5 6 2.5 6-2.5V4l-6 2.5L9 4zM9 4v13.5M15 6.5V20"/></svg> الخريطة</button>
+<div id="pl" aria-hidden="true"><div class="pl-bg" data-plclose></div><div class="pl-sheet" role="dialog" aria-modal="true">
+<button class="pl-x" data-plclose aria-label="إغلاق"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.500" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+<div class="pl-head"><span class="pl-lg" id="plLg"></span><div><h3 id="plNm"></h3><div class="pl-meta" id="plMeta"></div></div></div>
+<div class="pl-acts" id="plActs"></div>
+<div class="pl-ig" id="plIg"></div>
+</div></div>
 <div id="mapv" aria-hidden="true">
   <div class="mv-top">
     <button class="mv-btn" id="mvClose" aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
@@ -471,6 +495,8 @@ const LAST_UPDATE = "19 نوفمبر 2026";
 // رقم قياس Google Analytics (يبدأ بـ G-). إذا فاضي ما ينرسل أي إحصائيات.
 const GA_ID = "";
 
+const IG = {"Santa Nata – Murouj": "santanata.kw", "République – JŌN": "republiqueme", "MINOS – JŌN": "minosthegreek", "Tenderfellas – Shuwaikh": "tenderfellas", "FAYE – Hessah Al Mubarak": "faye.restaurant", "La Pala – Bneid Al Gar": "lapala.kw", "Say Suco – Al Shaheed Park": "saysuco", "Say Suco": "saysuco", "24 Sukhumvit – Salmiya": "24sukhumvit", "Good Neighbor – KIPCO Tower": "goodneighbor.kw", "The Butter Theory – Andalus Complex": "thebuttertheory.kw", "Better from Scratch": "bfs.eatery", "BAKED – Bneid Al Gar": "whileimbaked"};
+const MENU = {"FAYE – Hessah Al Mubarak": "https://faye.orderseazen.com", "Say Suco – Al Shaheed Park": "https://ordersaysuco.com", "Say Suco": "https://ordersaysuco.com", "Better from Scratch": "https://www.bfseatery.com", "La Pala – Bneid Al Gar": "https://linktr.ee/lapalakw", "24 Sukhumvit – Salmiya": "https://linktr.ee/orientalthaigroup", "Good Neighbor – KIPCO Tower": "https://reach.link/goodneighbor.kw", "BAKED – Bneid Al Gar": "https://reach.link/whileimbaked", "Santa Nata – Murouj": "https://www.santanata-kw.com", "République – JŌN": "https://www.jonkuwait.com/republique"};
 const TAGS = {"Santa Nata – Murouj": "سويت", "République – JŌN": "آسيوي", "MINOS – JŌN": "يوناني", "Tenderfellas – Shuwaikh": "دجاج تندر", "FAYE – Hessah Al Mubarak": "متوسطي", "Nue by Nomad – ONE SHARQ": "مطعم راقي", "La Pala – Bneid Al Gar": "إيطالي", "Say Suco – Al Shaheed Park": "أساي", "24 Sukhumvit – Salmiya": "تايلندي", "Good Neighbor – KIPCO Tower": "كافيه", "The Butter Theory – Andalus Complex": "مخبز وقهوة", "Better from Scratch": "أكل صحي", "BAKED – Bneid Al Gar": "بيغل ومخبوزات"};
 const CATEGORIES = [
   {id:"trends", ar:"ترندات هالشهر", en:"Trending This Month", icon:"🔥",
@@ -551,7 +577,7 @@ secEl.innerHTML = CATEGORIES.map((c,ci)=>{
       const n = typeof it==="string"?it:it.n, nw = typeof it==="object"&&it.isNew;
       return `<a class="card" href="${maps(n)}" target="_blank" rel="noopener" data-n="${norm(n)}" data-name="${esc(n)}" data-cat="${c.id}">
         ${LOGOS_R[n]?`<span class="lg rd"><img src="${LOGOS_R[n]}" alt="" loading="lazy"></span>`:LOGOS[n]?`<span class="lg"><img src="${LOGOS[n]}" alt="" loading="lazy"></span>`:`<span class="lg mono${isAr(n)?" ar":""}">${initials(n)}</span>`}
-        <span class="nm"><b class="${isAr(n)?"":"ltr"}">${n}</b><small>${c.id==="trends"&&TAGS[n]?`<i class="tg">${TAGS[n]}</i>`:""}افتح بالخريطة</small></span>
+        <span class="nm"><b class="${isAr(n)?"":"ltr"}">${n}</b><small>${c.id==="trends"&&TAGS[n]?`<i class="tg">${TAGS[n]}</i>`:""}شوف التفاصيل</small></span>
         <button class="like${liked.has(n)?" on":""}" type="button" aria-label="أعجبني" aria-pressed="${liked.has(n)}">${heartSvg}</button><span class="pin">${pinSvg}</span>${nw?'<span class="new">NEW</span>':""}
       </a>`}).join("")}</div>
   </section>`}).join("");
@@ -609,8 +635,34 @@ secEl.addEventListener("click", e => {
     track(on ? "place_like" : "place_unlike", { place, category });
     return;
   }
-  track("place_map_open", { place, category });
 });
+// ---------- صفحة المكان ----------
+(function(){
+  const pl=document.getElementById("pl"), CAT={}; CATEGORIES.forEach(c=>c.items.forEach(it=>{const n=typeof it==="string"?it:it.n; (CAT[n]=CAT[n]||[]).push(c)}));
+  const ic={map:'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.200-7-11a7 7 0 0 1 14 0c0 4.800-7 11-7 11z"/><circle cx="12" cy="10" r="2.500"/></svg>',menu:'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 4h14v16H5zM9 9h6M9 13h6"/></svg>',ig:'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.500" y="3.500" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.200" cy="6.800" r=".8" fill="currentColor"/></svg>'};
+  function openPl(n,cat){
+    const lg=LOGOS_R[n]||LOGOS[n], p=n.split(" – "), h=IG[n];
+    document.getElementById("plLg").innerHTML=lg?`<img src="${lg}" alt="">`:initials(n);
+    const nm=document.getElementById("plNm"); nm.textContent=p[0]; nm.className=isAr(n)?"":"ltr";
+    document.getElementById("plMeta").innerHTML=(TAGS[n]?`<span class="g">${TAGS[n]}</span>`:"")+(CAT[n]||[]).filter(c=>c.id!=="trends").map(c=>`<span>${c.ar}</span>`).join("")+(p[1]?`<span dir="ltr">${p[1]}</span>`:"");
+    document.getElementById("plActs").innerHTML=
+      (MENU[n]?`<a class="pri" href="${MENU[n]}" target="_blank" rel="noopener" data-act="menu">${ic.menu} المنيو والطلب</a>`:"")+
+      `<a class="${MENU[n]?"":"pri"}" href="${maps(n)}" target="_blank" rel="noopener" data-act="gmaps">${ic.map} افتح بقوقل ماب</a>`+
+      (h?`<a class="${MENU[n]?"full":""}" href="https://www.instagram.com/${h}/" target="_blank" rel="noopener" data-act="instagram">${ic.ig} انستقرامهم</a>`:"");
+    const w=Math.min(innerWidth,560)-32;
+    document.getElementById("plIg").innerHTML=h?`<h4>آخر شي نزلوه</h4><iframe loading="lazy" title="Instagram" height="${Math.round(w/3*2+150)}" src="https://www.instagram.com/${h}/embed/"></iframe>`:"";
+    pl.dataset.place=n; pl.dataset.cat=cat||""; pl.classList.add("open"); pl.setAttribute("aria-hidden","false"); document.body.style.overflow="hidden";
+    pl.querySelector(".pl-sheet").scrollTop=0;
+    if(location.hash!=="#place") history.pushState(null,"","#place");
+    track("place_open",{place:n,category:cat||""});
+  }
+  function closePl(){ if(!pl.classList.contains("open"))return; pl.classList.remove("open"); pl.setAttribute("aria-hidden","true"); document.body.style.overflow=""; document.getElementById("plIg").innerHTML=""; }
+  secEl.addEventListener("click",e=>{ const card=e.target.closest(".card"); if(!card||e.target.closest(".like"))return; e.preventDefault(); openPl(card.dataset.name,card.dataset.cat); });
+  pl.addEventListener("click",e=>{ if(e.target.closest("[data-plclose]")){ location.hash==="#place"?history.back():closePl(); return; } const a=e.target.closest("[data-act]"); if(a) track(a.dataset.act==="gmaps"?"place_map_open":"place_"+a.dataset.act,{place:pl.dataset.place,category:pl.dataset.cat}); });
+  addEventListener("popstate",()=>{ if(location.hash!=="#place") closePl(); });
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&pl.classList.contains("open")) history.back(); });
+})();
+
 chipsEl.addEventListener("click", e => { const b = e.target.closest(".chip"); if (b) track("category_select", { category: b.dataset.c }); });
 let qT;
 document.getElementById("q").addEventListener("input", e => {
