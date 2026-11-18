@@ -206,6 +206,7 @@ footer{text-align:center;padding:30px 16px 24px;color:var(--muted);font-size:13p
 .mv-row i{font-style:normal;font:700 12px "Sora",sans-serif;color:var(--olive)}
 .pv-pin{width:38px;height:38px;border-radius:50%;background:var(--paper);border:2.5px solid var(--olive);box-shadow:0 4px 10px rgba(29,36,30,.3);overflow:hidden;display:flex;align-items:center;justify-content:center;font:800 12px "Sora",sans-serif;color:var(--olive)}
 .pv-pin img{width:100%;height:100%;object-fit:cover}
+#mvmap .leaflet-tile-pane{filter:saturate(.55) sepia(.12) brightness(1.03)}
 .pv-me{width:18px;height:18px;border-radius:50%;background:#2f7de1;border:3px solid #fff;box-shadow:0 0 0 6px rgba(47,125,225,.25)}
 .pv-cl{width:42px;height:42px;border-radius:50%;background:var(--olive);color:#f5f2ea;border:3px solid var(--paper);box-shadow:0 4px 12px rgba(29,36,30,.35);display:flex;align-items:center;justify-content:center;font:800 14px "Sora",sans-serif}
 .leaflet-popup-content-wrapper{border-radius:16px;font-family:"Tajawal",sans-serif}
@@ -576,7 +577,7 @@ document.querySelectorAll(".sec").forEach(s => secIo.observe(s));
     }catch(e){ loading=false; say("تعذّر تحميل الخريطة، جرّب مرة ثانية"); return; }
     map=L.map("mvmap",{zoomControl:false,attributionControl:true}).setView([29.33,47.99],11);
     L.control.zoom({position:"bottomleft"}).addTo(map);
-    L.tileLayer("https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png",{maxZoom:19,subdomains:"abcd",attribution:'&copy; OpenStreetMap &copy; CARTO'}).addTo(map);
+    L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:19,attribution:'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'}).addTo(map);
     cluster=L.markerClusterGroup({showCoverageOnHover:false,maxClusterRadius:46,spiderfyOnMaxZoom:true,iconCreateFunction:c=>L.divIcon({className:"",iconSize:[42,42],html:`<div class="pv-cl">${c.getChildCount()}</div>`})});
     map.addLayer(cluster); draw(); msg.style.display="none"; loading=false;
     map.on("popupopen",e=>{const a=e.popup.getElement().querySelector(".pv-go"); if(a) a.onclick=()=>track("place_map_open",{place:a.dataset.place,category:"map"});});
