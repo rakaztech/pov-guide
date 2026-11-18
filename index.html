@@ -307,7 +307,25 @@ footer{text-align:center;padding:30px 16px 24px;color:var(--muted);font-size:13p
 .sec-head.bn{min-height:210px}
 @media (max-width:520px){.sec-head.bn{min-height:180px}}
 @media (prefers-reduced-motion:reduce){.bn-img.on{animation:none!important}}
-.maphint{display:flex;align-items:center;justify-content:center;gap:7px;margin:14px auto 0;padding:6px 10px;background:none;border:0;color:inherit;opacity:.82;font:inherit;font-size:14px;cursor:pointer;-webkit-tap-highlight-color:transparent}.maphint span{border-bottom:1px dashed currentColor;padding-bottom:2px}.maphint svg{animation:mhb 1.800s ease-in-out infinite}@keyframes mhb{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}@media (prefers-reduced-motion:reduce){.maphint svg{animation:none}}</style>
+.maphint{display:flex;align-items:center;justify-content:center;gap:7px;margin:14px auto 0;padding:6px 10px;background:none;border:0;color:inherit;opacity:.82;font:inherit;font-size:14px;cursor:pointer;-webkit-tap-highlight-color:transparent}.maphint span{border-bottom:1px dashed currentColor;padding-bottom:2px}.maphint svg{animation:mhb 1.800s ease-in-out infinite}@keyframes mhb{0%,100%{transform:translateY(0)}50%{transform:translateY(-3px)}}@media (prefers-reduced-motion:reduce){.maphint svg{animation:none}}.nm small .tg{font-style:normal;font-weight:700;font-size:11.5px;color:#fff;background:var(--gold);padding:2px 9px;border-radius:999px;margin-inline-end:3px;white-space:nowrap}#pl{position:fixed;inset:0;z-index:900;display:none}#pl.open{display:block}
+.pl-bg{position:absolute;inset:0;background:rgba(20,26,18,.55);animation:plf .25s ease}
+.pl-sheet{position:absolute;left:0;right:0;bottom:0;max-height:92vh;overflow:auto;background:var(--cream,#f5f2ea);border-radius:22px 22px 0 0;padding:20px 16px 26px;max-width:560px;margin:0 auto;animation:plu .32s cubic-bezier(.2,.8,.2,1);-webkit-overflow-scrolling:touch}
+@keyframes plf{from{opacity:0}}@keyframes plu{from{transform:translateY(40px);opacity:0}}
+.pl-x{position:absolute;top:12px;left:12px;width:36px;height:36px;border-radius:50%;border:0;background:rgba(0,0,0,.07);display:grid;place-items:center;cursor:pointer;color:inherit}
+.pl-head{display:flex;align-items:center;gap:13px;padding-left:44px}
+.pl-lg{flex:none;width:64px;height:64px;border-radius:50%;overflow:hidden;background:#fff;display:grid;place-items:center;border:1px solid rgba(0,0,0,.08);font-weight:700;font-size:20px}
+.pl-lg img{width:100%;height:100%;object-fit:cover}
+.pl-head h3{font-size:19px;line-height:1.35;margin:0}.pl-head h3.ltr{direction:ltr;text-align:right;font-family:"Sora"}
+.pl-meta{display:flex;flex-wrap:wrap;gap:6px;margin-top:7px}
+.pl-meta span{font-size:12px;padding:3px 10px;border-radius:999px;background:rgba(0,0,0,.06)}
+.pl-meta span.g{background:var(--gold);color:#fff;font-weight:700}
+.pl-acts{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin:16px 0 14px}
+.pl-acts a,.pl-acts button{display:flex;align-items:center;justify-content:center;gap:7px;padding:12px 8px;border-radius:14px;border:1px solid rgba(0,0,0,.12);background:#fff;color:inherit;font:inherit;font-size:14.5px;font-weight:700;text-decoration:none;cursor:pointer}
+.pl-acts .pri{background:var(--olive);color:#f5f2ea;border-color:transparent}
+.pl-acts .full{grid-column:1/-1}
+.pl-ig h4{font-size:14px;margin:4px 0 9px;opacity:.75;font-weight:600}
+.pl-ig iframe{width:100%;border:0;border-radius:14px;background:#fff;display:block}
+@media (prefers-reduced-motion:reduce){.pl-bg,.pl-sheet{animation:none}}</style>
 </head>
 <body>
 <svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><symbol id="lm-kw-towers" viewBox="0 0 130 250">
@@ -448,6 +466,12 @@ footer{text-align:center;padding:30px 16px 24px;color:var(--muted);font-size:13p
 
 
 <button type="button" class="mapfab" data-openmap="fab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M9 4 3 6.5v13.5l6-2.5 6 2.5 6-2.5V4l-6 2.5L9 4zM9 4v13.5M15 6.5V20"/></svg> الخريطة</button>
+<div id="pl" aria-hidden="true"><div class="pl-bg" data-plclose></div><div class="pl-sheet" role="dialog" aria-modal="true">
+<button class="pl-x" data-plclose aria-label="إغلاق"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2.500" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+<div class="pl-head"><span class="pl-lg" id="plLg"></span><div><h3 id="plNm"></h3><div class="pl-meta" id="plMeta"></div></div></div>
+<div class="pl-acts" id="plActs"></div>
+<div class="pl-ig" id="plIg"></div>
+</div></div>
 <div id="mapv" aria-hidden="true">
   <div class="mv-top">
     <button class="mv-btn" id="mvClose" aria-label="إغلاق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
@@ -471,33 +495,37 @@ const LAST_UPDATE = "19 نوفمبر 2026";
 // رقم قياس Google Analytics (يبدأ بـ G-). إذا فاضي ما ينرسل أي إحصائيات.
 const GA_ID = "G-F7TG8ZSSE2";
 
+const IG = {"Santa Nata – Murouj": "santanata.kw", "République – JŌN": "republiqueme", "MINOS – JŌN": "minosthegreek", "Tenderfellas – Shuwaikh": "tenderfellas", "FAYE – Hessah Al Mubarak": "faye.restaurant", "La Pala – Bneid Al Gar": "lapala.kw", "Say Suco – Al Shaheed Park": "saysuco", "Say Suco": "saysuco", "24 Sukhumvit – Salmiya": "24sukhumvit", "Good Neighbor – KIPCO Tower": "goodneighbor.kw", "The Butter Theory – Andalus Complex": "thebuttertheory.kw", "Better from Scratch": "bfs.eatery", "BAKED – Bneid Al Gar": "whileimbaked", "VOL.1 Roast Lab": "vol.1official", "CAF Café": "cafcafe", "KODO Roastery": "kodoroastery", "Air Roastery": "airroastery", "The BackBurner": "thebackburnerkw", "Mug Coffee & Roastery": "mug.cr", "Espresso Lab": "espressolab.kuwait", "Toby’s Estate": "tobysestate.kw", "% Arabica": "arabica.kuwait", "Stockroom Coffee Roasters": "stockroomcoffee", "Forest Botanical Coffee House": "forest.bch", "Flower Latte": "flower_latte", "Gathio": "gathiokw", "Sluggish": "sluggish.kw", "48 East Roastery": "48e.co", "48 East Bakery": "48e.bakers", "Limu": "limu.kw", "Haus of Matcha": "thehausofmatcha", "NAP Cafe": "nap_kw", "OLDI": "oldihouse", "Studio Roast": "studioroast.kw", "جبله للقهوة المختصة": "jeblacoffeeroasters", "20 Grams": "20grams_kw", "Speak Coffee": "speakroaster", "Gauge Cafe": "gaugecafe", "Wharf": "wharf.kw", "UMORE": "umorekw", "Boost Coffee": "boostcafe", "Earth Roastery": "earthroastery", "Cinnabon": "cinnabonkuwait", "Ladurée": "ladureekwt", "Angelina Paris": "angelinapariskw", "Bacha Coffee": "bachacoffeekw.sa", "Nouga": "nougakw", "House of Pretzel": "pretzel_kw", "The Jars": "thejarskw", "La Mer Chocolatier": "lamerchocolatier", "Cocoa Room": "cocoaroom", "Magnolia Bakery": "magnoliabakerykuwait", "Melenzane": "melenzanekw", "Kello Coffee House": "kello.kw", "Chocomelt": "chocomelt.kw", "Baix Bakery": "baix.bakery", "Stories Bakehouse": "storiesbakehouse", "Happy Crescent": "happycrescent", "Layers Master": "layersmaster", "Hindough's": "hindoughs", "Overjar": "overjar", "Marco’s Burger": "marcosburgerkw", "Jimmy’s Smashburgers": "jimmycooksburgers", "Milk Bun": "lovemilkbun", "Thinnies": "orderthinnies", "Burger Boutique": "burgerboutique", "Kings of Maillard": "kingsofmaillard", "Fat Cap": "eatfatcap", "INGEST": "ingest.kw", "Slider Station": "sliderstation", "Five Guys": "fiveguyskuwait", "Elevation Burger": "elevationkw", "Wimpy": "wimpykuwait", "Black Paprika": "blackpaprika", "Freej Swaileh": "fireej_9wail7", "Al Shamam Restaurant": "alshemam1", "Beit Dickson": "beitdickson", "Dar Hamad": "darhamadkw", "Haseer Restaurant": "tryhaseer", "Kashounat Al Bait": "kashounatalbait", "Amiti Noura": "amitinoura", "Bait Wadha": "bait_wadha", "Al Siteenat Restaurant": "alsiteenat", "Khaneen": "khaneen_kuwait", "Mama Mariam": "mamamariamkw", "Darb AlZalag": "darbalzalagkwt", "Kuwaiti Cuisine Restaurant": "kuwaiti_cuisine_rstrnt", "مطعم نكهه وبهار": "nakha_bhar", "Monasabat": "monasabat_rest", "مطعم دار جاسم": "darjasemkw", "مطعم جدر نثري": "jeder_nathri", "Mahyouf": "mahyouf.kwt", "Yukai": "yukaikw", "White Robata": "whiterobata", "Roka": "rokakuwaitofficial", "Mizumesa": "mizumesa", "Odachi": "odachikw", "Sakura": "sakura_kuwait", "FAIA": "faiaetc", "Meme’s Curry": "meme_curry", "Phet Phet": "phetphetkw", "Principale Ristorante Di Nino": "principalekw", "Casa Angelo": "casangelokuwait", "Vigonovo": "vigonovo_kw", "Eataly": "eatalykuwait", "Novikov Brasserie": "novikovbrasserie_kuwait", "Delfino Mayfair": "delfinomayfair", "SOLO Pizza Napulitana": "solopn", "San Ristorante": "san.ristorante", "Francesca’s Italian Kitchen": "francescaskw", "Trovami Italian Trattoria": "trovami_kw", "Soul and Spice": "soulandspice.kw", "The Cardamom Club": "cardamom.club", "Mughal Mahal": "mughalmahalkuwait", "Agnii": "agnii.kwt", "Chef Naushad’s Signature Restaurant": "naushadssignature", "Nizamat Hyderabad": "nizamat.hyderabad", "Thakkara": "thakkara_kuwait", "Saravanaa Bhavan": "saravanaabhavankuwait", "OFK": "ofk.kuwait", "Philippe Chow": "philippechow.kw", "Si": "sikuwait", "Cure": "cure.kuwait", "Off The Coal (OTC)": "offthecoal", "The Coffee Boutique (TCB)": "tcbkwt", "Caribou Coffee – Jaber Al-Ahmad": "cariboucoffeeme", "Goodcup – Mubarakiya": "goodcupkw", "Cantina": "cantina_kw", "Piatti": "piatti.official", "Paparazzi": "paparazzi.kw", "Trapani": "trapanikwt", "Delizio": "delizio.kw", "Tatami": "tatamirestaurant", "Maki": "makirest", "The Kimchi": "the.kimchi.kw", "CAF Café – Assima Mall Rooftop": "cafcafe", "CAF Café – K-Land Rooftop": "cafcafe", "The Avenues": "the_avenues", "360 Mall": "mall360", "Assima Mall": "theassimamall", "The Warehouse Mall": "thewarehousekuwait", "Al Kout Mall": "alkoutmall", "The Gate Mall": "thegatemallkwt", "Promenade Mall": "thepromenadekw", "Al Shaheed Park": "alshaheedpark", "Winter Wonderland Kuwait": "wwlkuwait", "Luna Park": "kuwaitlunapark", "Joun": "jon.kuwait", "Supernova": "supernovaburgerkuwait", "Good Neighbor": "goodneighbor.kw", "Santa Nata": "santanata.kw"};
+const MENU = {"FAYE – Hessah Al Mubarak": "https://faye.orderseazen.com", "Say Suco – Al Shaheed Park": "https://ordersaysuco.com", "Say Suco": "https://ordersaysuco.com", "Better from Scratch": "https://www.bfseatery.com", "La Pala – Bneid Al Gar": "https://linktr.ee/lapalakw", "24 Sukhumvit – Salmiya": "https://linktr.ee/orientalthaigroup", "Good Neighbor – KIPCO Tower": "https://reach.link/goodneighbor.kw", "BAKED – Bneid Al Gar": "https://reach.link/whileimbaked", "Santa Nata – Murouj": "https://www.santanata-kw.com", "République – JŌN": "https://www.jonkuwait.com/republique"};
+const TAGS = {"Santa Nata – Murouj": "سويت", "République – JŌN": "آسيوي", "MINOS – JŌN": "يوناني", "Tenderfellas – Shuwaikh": "دجاج تندر", "FAYE – Hessah Al Mubarak": "أكل عالمي", "Nue by Nomad – ONE SHARQ": "مطعم راقي", "La Pala – Bneid Al Gar": "إيطالي", "Say Suco – Al Shaheed Park": "أساي", "24 Sukhumvit – Salmiya": "تايلندي", "Good Neighbor – KIPCO Tower": "كافيه", "The Butter Theory – Andalus Complex": "مخبز وقهوة", "Better from Scratch": "مطعم وكافيه", "BAKED – Bneid Al Gar": "بيغل ومخبوزات"};
 const CATEGORIES = [
   {id:"trends", ar:"ترندات هالشهر", en:"Trending This Month", icon:"🔥",
    items:["Santa Nata – Murouj", "République – JŌN", "MINOS – JŌN", "Tenderfellas – Shuwaikh", "FAYE – Hessah Al Mubarak", "Nue by Nomad – ONE SHARQ", "La Pala – Bneid Al Gar", "Say Suco – Al Shaheed Park", "24 Sukhumvit – Salmiya", "Good Neighbor – KIPCO Tower", "The Butter Theory – Andalus Complex", "Better from Scratch", "BAKED – Bneid Al Gar"]},
-  {id:"coffee", ar:"كافيهات (قهوة مختصة)", en:"Specialty Coffee", icon:"☕",
-   items:["Toby’s Estate","% Arabica","VOL.1 Roast Lab","CAF Café","ORU The Roastery","48 East Roastery","Stockroom Coffee Roasters","Altitude Roasters","KODO Roastery","Air Roastery","The BackBurner","Mug Coffee & Roastery","Richard’s Coffee","Espresso Lab","Pick","Forest Botanical Coffee House","Flower Latte","Pisces","Sand","Maroon","Gathio","Limu","Sluggish","Clay","Mr. Holmes Bakehouse","Haus of Matcha","Say Suco","Otherwise","POV","NAP Cafe","OLDI","Studio Roast","جبله للقهوة المختصة","20 Grams","Speak Coffee","Gauge Cafe","Wharf","UMORE","Propaganda","CRO","Café Kitsuné","The Neighbourhood","Good Neighbor","Boost Coffee","Haven","Espresso Boutique","Earth Roastery"]},
-  {id:"bakery", ar:"مخابز وحلويات", en:"Bakeries & Dessert Cafés", icon:"🥐",
-   items:["Mr. Holmes Bakehouse","48 East Bakery","Tap Bakery","Cinnabon","Ladurée","Angelina Paris","Bacha Coffee","Nouga","Santa Nata","House of Pretzel","The Jars","La Mer Chocolatier","Cocoa Room","Magnolia Bakery","Melenzane","Kello Coffee House","Chocomelt","Baix Bakery","Stories Bakehouse","Happy Crescent","Layers Master","CRO","Clay","Hindough's","BAKED – Bneid Al Gar","Overjar"]},
-  {id:"heritage", ar:"قهاوي كويتية وأماكن تراثية", en:"Traditional Kuwaiti Cafés & Heritage Spots", icon:"🫖",
-   items:["بوناشي","الدلالوة","الشميمري","بيت أحمد","المقاصيص","فريج الدهلة","قاصد خير","بو فاطمة","الشمم – شاي أبو راشد","بن العميد – المباركية","جدّي","مقاهي سوق المباركية"]},
-  {id:"kuwaiti", ar:"أكل كويتي", en:"Kuwaiti Cuisine", icon:"🍚",
-   items:["Freej Swaileh", "Al Shamam Restaurant", "Beit Dickson", "Dar Hamad", "Haseer Restaurant", "Kashounat Al Bait", "Amiti Noura", "Bait Wadha", "Al Siteenat Restaurant", "Khaneen", "Mama Mariam", "Darb AlZalag", "Kuwaiti Cuisine Restaurant", "مطعم نكهه وبهار", "Monasabat", "مطعم دار جاسم", "مطعم جدر نثري", "Mahyouf"]},
-  {id:"burgers", ar:"مطاعم برجر", en:"Burger Restaurants", icon:"🍔",
-   items:["Marco’s Burger","Jimmy’s Smashburgers","Milk Bun","Supernova","Thinnies","Burger Boutique","Kings of Maillard","Fat Cap","Chucks","WK","INGEST","Slider Station","Five Guys","Shake Shack","Elevation Burger","Pickl","Johnny Rockets","Wimpy","Oak and Smoke","Black Paprika"]},
-  {id:"japanese", ar:"مطاعم آسيوية", en:"Asian Restaurants", icon:"🍣",
-   items:["Yukai","White Robata","Roka","Ora","Mizumesa","Tatami","Maki","Odachi","Sakura","Nori","FAIA","The Kimchi","Meme’s Curry","Phet Phet","Solange","Bar Fres"]},
-  {id:"italian", ar:"مطاعم إيطالية", en:"Italian Restaurants", icon:"🍝",
-   items:["Principale Ristorante Di Nino","Giulia by Vigonovo","Casa Angelo","Cantina","Vigonovo","Piatti","Paparazzi","Olio Trattoria Italiana","Eataly","Trapani","Novikov Brasserie","Delfino Mayfair","Delizio","SOLO Pizza Napulitana","San Ristorante","Melenzane","Francesca’s Italian Kitchen","Trovami Italian Trattoria","Giovanni Restaurant"]},
-  {id:"indian", ar:"مطاعم هندية", en:"Indian Restaurants", icon:"🍛",
-   items:["Jamawar Indian Restaurant","Soul and Spice","The Cardamom Club","Asha’s","Bukhara Indian Restaurant","Kumar Multi-Cultural Table","Mughal Mahal","Agnii","Royal Deccan Palace","Copper Chimney","Chef Naushad’s Signature Restaurant","Nizamat Hyderabad","Thakkara","Saravanaa Bhavan","Avanti Palace"]},
   {id:"malls", ar:"مجمعات تجارية", en:"Shopping Malls", icon:"🛍️",
    items:["The Avenues","360 Mall","Assima Mall","Al Hamra Luxury Center","The Warehouse Mall","Aventura Mall","Marina Mall","Al Kout Mall","The Gate Mall","Promenade Mall","Boulevard Mall","Mutlaa Complex – Jahra","Homz Mall – Dajeej"]},
   {id:"outdoor", ar:"ترفيه وأماكن للتمشي", en:"Entertainment & Outdoor Experiences", icon:"🌿",
    items:["Al Shaheed Park","Hessah Al Mubarak District","Murouj","Aventura Mall","The Walk – Ardiya","Marina Crescent","Arabella Complex","The Scientific Center","Winter Wonderland Kuwait","Sheikh Jaber Al Ahmad Cultural Centre","Sheikh Abdullah Al Salem Cultural Centre","Andalus Complex","K-Land","Luna Park","MAR by Safir","Joun","Mutlaa Complex – Jahra","Messila Beach","Dhai Complex"]},
+  {id:"coffee", ar:"كافيهات (قهوة مختصة)", en:"Specialty Coffee", icon:"☕",
+   items:["Toby’s Estate","% Arabica","VOL.1 Roast Lab","CAF Café","ORU The Roastery","48 East Roastery","Stockroom Coffee Roasters","Altitude Roasters","KODO Roastery","Air Roastery","The BackBurner","Mug Coffee & Roastery","Richard’s Coffee","Espresso Lab","Pick","Forest Botanical Coffee House","Flower Latte","Pisces","Sand","Maroon","Gathio","Limu","Sluggish","Clay","Mr. Holmes Bakehouse","Haus of Matcha","Say Suco","Otherwise","POV","NAP Cafe","OLDI","Studio Roast","جبله للقهوة المختصة","20 Grams","Speak Coffee","Gauge Cafe","Wharf","UMORE","Propaganda","CRO","Café Kitsuné","The Neighbourhood","Good Neighbor","Boost Coffee","Haven","Espresso Boutique","Earth Roastery"]},
+  {id:"bakery", ar:"مخابز وحلويات", en:"Bakeries & Dessert Cafés", icon:"🥐",
+   items:["Mr. Holmes Bakehouse","48 East Bakery","Tap Bakery","Cinnabon","Ladurée","Angelina Paris","Bacha Coffee","Nouga","Santa Nata","House of Pretzel","The Jars","La Mer Chocolatier","Cocoa Room","Magnolia Bakery","Melenzane","Kello Coffee House","Chocomelt","Baix Bakery","Stories Bakehouse","Happy Crescent","Layers Master","CRO","Clay","Hindough's","BAKED – Bneid Al Gar","Overjar"]},
+  {id:"rooftop", ar:"روفتوب", en:"Rooftops", icon:"🌇",
+   items:["Sway", "December Café", "The Coffee Boutique (TCB)", "Trot", "CAF Café – Assima Mall Rooftop", "Caribou Coffee – Jaber Al-Ahmad", "Mokha Café – Al Deera", "Nube", "CAF Café – K-Land Rooftop", "Goodcup – Mubarakiya"]},
   {id:"upscale", ar:"مطاعم راقية", en:"Upscale Dining", icon:"🥂",
    items:["White Robata", "OFK", "Ora", "Roka", "Paparazzi", "Giulia by Vigonovo", "Philippe Chow", "Si", "Solange", "Cure", "Mizumesa", "Piatti", "Novikov Brasserie", "Off The Coal (OTC)", "Nue by Nomad – ONE SHARQ"]},
-  {id:"rooftop", ar:"روفتوب", en:"Rooftops", icon:"🌇",
-   items:["Sway", "December Café", "The Coffee Boutique (TCB)", "Trot", "CAF Café – Assima Mall Rooftop", "Caribou Coffee – Jaber Al-Ahmad", "Mokha Café – Al Deera", "Nube", "CAF Café – K-Land Rooftop", "Goodcup – Mubarakiya"]}
+  {id:"italian", ar:"مطاعم إيطالية", en:"Italian Restaurants", icon:"🍝",
+   items:["Principale Ristorante Di Nino","Giulia by Vigonovo","Casa Angelo","Cantina","Vigonovo","Piatti","Paparazzi","Olio Trattoria Italiana","Eataly","Trapani","Novikov Brasserie","Delfino Mayfair","Delizio","SOLO Pizza Napulitana","San Ristorante","Melenzane","Francesca’s Italian Kitchen","Trovami Italian Trattoria","Giovanni Restaurant"]},
+  {id:"japanese", ar:"مطاعم آسيوية", en:"Asian Restaurants", icon:"🍣",
+   items:["Yukai","White Robata","Roka","Ora","Mizumesa","Tatami","Maki","Odachi","Sakura","Nori","FAIA","The Kimchi","Meme’s Curry","Phet Phet","Solange","Bar Fres"]},
+  {id:"indian", ar:"مطاعم هندية", en:"Indian Restaurants", icon:"🍛",
+   items:["Jamawar Indian Restaurant","Soul and Spice","The Cardamom Club","Asha’s","Bukhara Indian Restaurant","Kumar Multi-Cultural Table","Mughal Mahal","Agnii","Royal Deccan Palace","Copper Chimney","Chef Naushad’s Signature Restaurant","Nizamat Hyderabad","Thakkara","Saravanaa Bhavan","Avanti Palace"]},
+  {id:"burgers", ar:"مطاعم برجر", en:"Burger Restaurants", icon:"🍔",
+   items:["Marco’s Burger","Jimmy’s Smashburgers","Milk Bun","Supernova","Thinnies","Burger Boutique","Kings of Maillard","Fat Cap","Chucks","WK","INGEST","Slider Station","Five Guys","Shake Shack","Elevation Burger","Pickl","Johnny Rockets","Wimpy","Oak and Smoke","Black Paprika"]},
+  {id:"kuwaiti", ar:"أكل كويتي", en:"Kuwaiti Cuisine", icon:"🍚",
+   items:["Freej Swaileh", "Al Shamam Restaurant", "Beit Dickson", "Dar Hamad", "Haseer Restaurant", "Kashounat Al Bait", "Amiti Noura", "Bait Wadha", "Al Siteenat Restaurant", "Khaneen", "Mama Mariam", "Darb AlZalag", "Kuwaiti Cuisine Restaurant", "مطعم نكهه وبهار", "Monasabat", "مطعم دار جاسم", "مطعم جدر نثري", "Mahyouf"]},
+  {id:"heritage", ar:"قهاوي كويتية وأماكن تراثية", en:"Traditional Kuwaiti Cafés & Heritage Spots", icon:"🫖",
+   items:["بوناشي","الدلالوة","الشميمري","بيت أحمد","المقاصيص","فريج الدهلة","قاصد خير","بو فاطمة","الشمم – شاي أبو راشد","بن العميد – المباركية","جدّي","مقاهي سوق المباركية"]}
+
 ];
 /* ============================================================ */
 
@@ -550,7 +578,7 @@ secEl.innerHTML = CATEGORIES.map((c,ci)=>{
       const n = typeof it==="string"?it:it.n, nw = typeof it==="object"&&it.isNew;
       return `<a class="card" href="${maps(n)}" target="_blank" rel="noopener" data-n="${norm(n)}" data-name="${esc(n)}" data-cat="${c.id}">
         ${LOGOS_R[n]?`<span class="lg rd"><img src="${LOGOS_R[n]}" alt="" loading="lazy"></span>`:LOGOS[n]?`<span class="lg"><img src="${LOGOS[n]}" alt="" loading="lazy"></span>`:`<span class="lg mono${isAr(n)?" ar":""}">${initials(n)}</span>`}
-        <span class="nm"><b class="${isAr(n)?"":"ltr"}">${n}</b><small>افتح بالخريطة</small></span>
+        <span class="nm"><b class="${isAr(n)?"":"ltr"}">${n}</b><small>${c.id==="trends"&&TAGS[n]?`<i class="tg">${TAGS[n]}</i>`:""}شوف التفاصيل</small></span>
         <button class="like${liked.has(n)?" on":""}" type="button" aria-label="أعجبني" aria-pressed="${liked.has(n)}">${heartSvg}</button><span class="pin">${pinSvg}</span>${nw?'<span class="new">NEW</span>':""}
       </a>`}).join("")}</div>
   </section>`}).join("");
@@ -608,8 +636,34 @@ secEl.addEventListener("click", e => {
     track(on ? "place_like" : "place_unlike", { place, category });
     return;
   }
-  track("place_map_open", { place, category });
 });
+// ---------- صفحة المكان ----------
+(function(){
+  const pl=document.getElementById("pl"), CAT={}; CATEGORIES.forEach(c=>c.items.forEach(it=>{const n=typeof it==="string"?it:it.n; (CAT[n]=CAT[n]||[]).push(c)}));
+  const ic={map:'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s-7-6.200-7-11a7 7 0 0 1 14 0c0 4.800-7 11-7 11z"/><circle cx="12" cy="10" r="2.500"/></svg>',menu:'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M5 4h14v16H5zM9 9h6M9 13h6"/></svg>',ig:'<svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor" stroke-width="2"><rect x="3.500" y="3.500" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.200" cy="6.800" r=".8" fill="currentColor"/></svg>'};
+  function openPl(n,cat){
+    const lg=LOGOS_R[n]||LOGOS[n], p=n.split(" – "), h=IG[n];
+    document.getElementById("plLg").innerHTML=lg?`<img src="${lg}" alt="">`:initials(n);
+    const nm=document.getElementById("plNm"); nm.textContent=p[0]; nm.className=isAr(n)?"":"ltr";
+    document.getElementById("plMeta").innerHTML=(TAGS[n]?`<span class="g">${TAGS[n]}</span>`:"")+(CAT[n]||[]).filter(c=>c.id!=="trends").map(c=>`<span>${c.ar}</span>`).join("")+(p[1]?`<span dir="ltr">${p[1]}</span>`:"");
+    document.getElementById("plActs").innerHTML=
+      (MENU[n]?`<a class="pri" href="${MENU[n]}" target="_blank" rel="noopener" data-act="menu">${ic.menu} المنيو والطلب</a>`:"")+
+      `<a class="${MENU[n]?"":"pri"}" href="${maps(n)}" target="_blank" rel="noopener" data-act="gmaps">${ic.map} افتح بقوقل ماب</a>`+
+      (h?`<a class="${MENU[n]?"full":""}" href="https://www.instagram.com/${h}/" target="_blank" rel="noopener" data-act="instagram">${ic.ig} انستقرامهم</a>`:"");
+    const w=Math.min(innerWidth,560)-32;
+    document.getElementById("plIg").innerHTML=h?`<h4>آخر شي نزلوه</h4><iframe loading="lazy" title="Instagram" height="${Math.round(w/3*2+150)}" src="https://www.instagram.com/${h}/embed/"></iframe>`:"";
+    pl.dataset.place=n; pl.dataset.cat=cat||""; pl.classList.add("open"); pl.setAttribute("aria-hidden","false"); document.body.style.overflow="hidden";
+    pl.querySelector(".pl-sheet").scrollTop=0;
+    if(location.hash!=="#place") history.pushState(null,"","#place");
+    track("place_open",{place:n,category:cat||""});
+  }
+  function closePl(){ if(!pl.classList.contains("open"))return; pl.classList.remove("open"); pl.setAttribute("aria-hidden","true"); document.body.style.overflow=""; document.getElementById("plIg").innerHTML=""; }
+  secEl.addEventListener("click",e=>{ const card=e.target.closest(".card"); if(!card||e.target.closest(".like"))return; e.preventDefault(); openPl(card.dataset.name,card.dataset.cat); });
+  pl.addEventListener("click",e=>{ if(e.target.closest("[data-plclose]")){ location.hash==="#place"?history.back():closePl(); return; } const a=e.target.closest("[data-act]"); if(a) track(a.dataset.act==="gmaps"?"place_map_open":"place_"+a.dataset.act,{place:pl.dataset.place,category:pl.dataset.cat}); });
+  addEventListener("popstate",()=>{ if(location.hash!=="#place") closePl(); });
+  addEventListener("keydown",e=>{ if(e.key==="Escape"&&pl.classList.contains("open")) history.back(); });
+})();
+
 chipsEl.addEventListener("click", e => { const b = e.target.closest(".chip"); if (b) track("category_select", { category: b.dataset.c }); });
 let qT;
 document.getElementById("q").addEventListener("input", e => {
