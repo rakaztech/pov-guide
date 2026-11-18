@@ -282,6 +282,20 @@ footer{text-align:center;padding:30px 16px 24px;color:var(--muted);font-size:13p
 .sec-head.bn .bn-num{transform:translateX(-30px);opacity:0;transition:transform .8s .15s cubic-bezier(.2,.8,.2,1),opacity .8s .15s}
 .sec-head.bn.in .bn-num{transform:none;opacity:1}
 @media (max-width:520px){.sec-head.bn{min-height:128px;border-radius:20px}.sec-head.bn h2{font-size:25px}.bn-num{font-size:62px}}
+
+.sec-head.bn{min-height:190px;background:#141815}
+.sec-head.bn::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(10,12,11,0) 30%,rgba(10,12,11,.55) 100%);z-index:-1}
+.bn-b{position:absolute;border-radius:50%;filter:blur(38px);z-index:-2;opacity:.95;will-change:transform}
+.bn-b.b-a{width:70%;aspect-ratio:1;background:var(--h);top:-55%;right:-12%;animation:bnA 11s ease-in-out infinite}
+.bn-b.b-b{width:55%;aspect-ratio:1;background:var(--h2);bottom:-70%;left:-8%;animation:bnB 13s ease-in-out infinite}
+.bn-b.b-c{width:34%;aspect-ratio:1;background:var(--h3);top:-10%;left:28%;opacity:.7;animation:bnC 9s ease-in-out infinite}
+@keyframes bnA{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-18%,22%) scale(1.18)}}
+@keyframes bnB{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(24%,-26%) scale(1.22)}}
+@keyframes bnC{0%,100%{transform:translate(0,0) scale(.9)}50%{transform:translate(30%,40%) scale(1.25)}}
+.sec-head.bn h2{font-size:36px;text-shadow:0 2px 18px rgba(0,0,0,.35)}
+.bn-num{font-size:96px;-webkit-text-stroke:1.4px rgba(255,255,255,.7)}
+@media (max-width:520px){.sec-head.bn{min-height:160px}.sec-head.bn h2{font-size:29px}.bn-num{font-size:74px}}
+@media (prefers-reduced-motion:reduce){.bn-b{animation:none!important}}
 </style>
 </head>
 <body>
@@ -501,7 +515,7 @@ const saveLikes = () => { try { localStorage.setItem("pov_likes", JSON.stringify
 const heartSvg = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M12 20.5s-7.5-4.6-9.2-9.4C1.6 7.6 3.9 4.5 7.2 4.5c2 0 3.6 1.1 4.8 2.8 1.2-1.7 2.8-2.8 4.8-2.8 3.3 0 5.6 3.1 4.4 6.6-1.7 4.8-9.2 9.4-9.2 9.4z"/></svg>';
 const esc = s => s.replace(/&/g,"&amp;").replace(/"/g,"&quot;");
 
-const BN_HUES = ["#7a3b2e","#4a3a2a","#6b4a2f","#5a4a32","#3f5a4a","#6e2f2f","#2f4466","#5b3a52","#7a5a2a","#3a4f5e","#425644","#2f3e31","#4a4466"];
+const BN_HUES = [["#b3261e","#ff7a18","#ffd166"],["#3b2a20","#a9672f","#e6c79c"],["#7a3e12","#e8a23d","#f7d9a0"],["#2f4a3a","#8fa77a","#d9c58a"],["#0f5c4d","#2bb39a","#e9d27a"],["#7a1f1f","#e0532f","#f2b56b"],["#16324f","#3a7ca5","#9ad1d4"],["#5a2a27","#c2573a","#f0c987"],["#6b3f0e","#e0902f","#ffd9a0"],["#3d2c5e","#8a63c9","#e6b3d6"],["#1f4d3a","#58a36c","#cfe3a1"],["#1c1c22","#8a6a3b","#e7cf9b"],["#27304f","#e07a5f","#f2cc8f"]];
 const maps = n => "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(n + " Kuwait");
 const pinSvg = '<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 21s-7-6.2-7-11.5A7 7 0 0 1 19 9.5C19 14.8 12 21 12 21z"/><circle cx="12" cy="9.5" r="2.5"/></svg>';
 
@@ -515,9 +529,9 @@ chipsEl.innerHTML = '<button class="chip on" data-c="all">الكل</button>' +
 secEl.innerHTML = CATEGORIES.map((c,ci)=>{
   total += c.items.length;
   return `<section class="sec" id="${c.id}" data-c="${c.id}">
-    <div class="sec-head bn" style="--h:${BN_HUES[ci%BN_HUES.length]}">
+    <div class="sec-head bn" style="--h:${BN_HUES[ci%BN_HUES.length][0]};--h2:${BN_HUES[ci%BN_HUES.length][1]};--h3:${BN_HUES[ci%BN_HUES.length][2]}">
       <span class="bn-num en">${String(ci+1).padStart(2,"0")}</span>
-      <span class="bn-emo">${c.icon}</span>
+      <i class="bn-b b-a"></i><i class="bn-b b-b"></i><i class="bn-b b-c"></i>
       <div class="sec-title"><div><h2>${c.ar}</h2><span class="en">${c.en} · ${c.items.length}</span></div></div>
       <span class="count">${c.items.length} مكان</span>
     </div>
