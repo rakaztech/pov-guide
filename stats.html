@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>POV — إحصائيات الدليل</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Readex+Pro:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--g:#425644;--bg:#f4f1ea;--card:#fbfaf6;--line:#e3ddd0;--ink:#1f2a21;--mut:#6b766d}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:"Readex Pro",system-ui,sans-serif;line-height:1.5}
+.wrap{max-width:1000px;margin:0 auto;padding:22px 16px 60px}
+h1{font-size:24px;margin:0 0 4px}
+.sub{color:var(--mut);font-size:14px;margin-bottom:18px}
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:18px}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
+.tile b{display:block;font-size:28px;color:var(--g);font-variant-numeric:tabular-nums;direction:ltr;text-align:right}
+.tile span{font-size:13px;color:var(--mut)}
+.bar{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
+.bar button,.bar select,.bar input{font:inherit;font-size:14px;padding:8px 14px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--ink);cursor:pointer}
+.bar button.on{background:var(--g);color:#fff;border-color:var(--g)}
+.bar input{flex:1;min-width:150px;cursor:text}
+.box{background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:auto;margin-bottom:22px}
+table{width:100%;border-collapse:collapse;font-size:14px;min-width:560px}
+th,td{padding:10px 12px;text-align:right;border-bottom:1px solid var(--line);white-space:nowrap}
+th{font-weight:600;color:var(--mut);font-size:13px;position:sticky;top:0;background:var(--card);cursor:pointer}
+td.n,th.n{text-align:left;direction:ltr;font-variant-numeric:tabular-nums}
+td.nm{font-weight:600;white-space:normal;min-width:170px}
+tr:last-child td{border-bottom:0}
+h2{font-size:17px;margin:22px 0 6px}
+.note{color:var(--mut);font-size:13px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>إحصائيات دليل POV</h1>
+  <div class="sub" id="sub">يحمّل…</div>
+  <div class="tiles" id="tiles"></div>
+  <h2>الأماكن</h2>
+  <div class="bar">
+    <button data-r="all" class="on">كل الفترة</button><button data-r="1">اليوم</button><button data-r="7">آخر 7 أيام</button><button data-r="30">آخر 30 يوم</button>
+    <input id="q" placeholder="دوّر على مكان…">
+  </div>
+  <div class="box"><table id="places"></table></div>
+  <h2>الأقسام</h2>
+  <div class="box"><table id="cats"></table></div>
+  <h2>شنو يبحثون عنه</h2>
+  <div class="box"><table id="search"></table></div>
+  <p class="note">العدّ بدأ يوم 21 نوفمبر 2026. الأرقام مرّات ضغط، مو عدد أشخاص: نفس الشخص لو فتح المكان مرتين ينحسب مرتين. اللايك ينقص إذا انشال.</p>
+</div>
+<script>
+const DB = "https://pov-guide-cbbc4-default-rtdb.europe-west1.firebasedatabase.app";
+const CAT = {trends:"ترندات هالشهر",malls:"مجمعات تجارية",outdoor:"ترفيه وأماكن للتمشي",coffee:"كافيهات",bakery:"مخابز وحلويات",rooftop:"روفتوب",upscale:"مطاعم راقية",italian:"مطاعم إيطالية",japanese:"مطاعم آسيوية",indian:"مطاعم هندية",burgers:"مطاعم برجر",kuwaiti:"أكل كويتي",heritage:"قهاوي كويتية",all:"الكل",map:"الخريطة"};
+const COLS = [["place_open","فتحوا صفحته"],["place_map_open","قوقل ماب"],["map_pin_open","ضغطة بالخريطة"],["place_menu","المنيو"],["place_instagram","انستقرامهم"],["likes","لايكات"]];
+const fmt = n => (n||0).toLocaleString("en-US"), dec = k => { try { return decodeURIComponent(k); } catch (e) { return k; } };
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+let stats = {}, daily = {}, likes = {}, range = "all", sortCol = "place_open";
+const kwDay = off => new Date(Date.now() + 3*3600e3 - off*864e5).toISOString().slice(0,10);
+function src(){ if (range === "all") return stats; const o = {};
+  for (let i = 0; i < +range; i++) { const d = daily[kwDay(i)] || {}; for (const e in d) for (const p in d[e]) { (o[e] = o[e] || {})[p] = (o[e][p] || 0) + d[e][p]; } }
+  return o; }
+function render(){
+  const s = src(), q = document.getElementById("q").value.trim().toLowerCase(), rows = {};
+  COLS.forEach(([e]) => { const m = e === "likes" ? (range === "all" ? likes : {}) : (s[e] || {}); for (const p in m) { if (p === "__test__" || /^%/.test(p)) continue; (rows[p] = rows[p] || {})[e] = m[p]; } });
+  let list = Object.entries(rows).filter(([p]) => !q || dec(p).toLowerCase().includes(q)).sort((a,b) => (b[1][sortCol]||0) - (a[1][sortCol]||0));
+  document.getElementById("places").innerHTML = "<tr><th>المكان</th>" + COLS.map(([e,l]) => `<th class="n" data-c="${e}">${l}${e===sortCol?" ▼":""}</th>`).join("") + "</tr>" +
+    (list.map(([p,r]) => `<tr><td class="nm">${esc(dec(p))}</td>` + COLS.map(([e]) => `<td class="n">${r[e] ? fmt(r[e]) : "–"}</td>`).join("") + "</tr>").join("") || `<tr><td colspan="7" class="note">ما في بيانات بهالفترة للحين.</td></tr>`);
+  const cs = {}; ["category_select","section_view","map_filter"].forEach(e => { for (const c in (s[e]||{})) (cs[c] = cs[c] || {})[e] = s[e][c]; });
+  document.getElementById("cats").innerHTML = "<tr><th>القسم</th><th class='n'>اختاروه من الفوق</th><th class='n'>وصلوا له بالسكرول</th><th class='n'>فلتر الخريطة</th></tr>" +
+    Object.entries(cs).sort((a,b) => (b[1].category_select||0)+(b[1].section_view||0) - (a[1].category_select||0)-(a[1].section_view||0)).map(([c,r]) => `<tr><td class="nm">${esc(CAT[c]||dec(c))}</td><td class="n">${fmt(r.category_select)}</td><td class="n">${fmt(r.section_view)}</td><td class="n">${fmt(r.map_filter)}</td></tr>`).join("");
+  const se = {}; ["search","search_no_results"].forEach(e => { for (const t in (s[e]||{})) (se[t] = se[t] || {})[e] = s[e][t]; });
+  document.getElementById("search").innerHTML = "<tr><th>الكلمة</th><th class='n'>مرات البحث</th><th class='n'>ما طلع لهم شي</th></tr>" +
+    (Object.entries(se).sort((a,b) => (b[1].search||0) - (a[1].search||0)).slice(0,100).map(([t,r]) => `<tr><td class="nm">${esc(dec(t))}</td><td class="n">${fmt(r.search)}</td><td class="n">${r.search_no_results ? fmt(r.search_no_results) : "–"}</td></tr>`).join("") || `<tr><td colspan="3" class="note">ما في بحث مسجل للحين.</td></tr>`);
+  const sum = e => Object.entries(s[e]||{}).reduce((a,[k,v]) => k === "__test__" ? a : a + v, 0);
+  const lk = Object.entries(likes).reduce((a,[k,v]) => (k === "__test__" || /^%/.test(k)) ? a : a + v, 0);
+  document.getElementById("tiles").innerHTML = [["فتح صفحة مكان",sum("place_open")],["فتح قوقل ماب",sum("place_map_open")],["فتح الخريطة",sum("map_open")],["ضغط على المنيو",sum("place_menu")],["ضغط على انستقرام مكان",sum("place_instagram")],["مجموع اللايكات",lk]].map(([l,v]) => `<div class="tile"><b>${fmt(v)}</b><span>${l}</span></div>`).join("");
+}
+async function load(){
+  const g = p => fetch(DB + p + ".json").then(r => r.ok ? r.json() : null).catch(() => null);
+  [stats, daily, likes] = (await Promise.all([g("/stats"), g("/daily"), g("/likes")])).map(x => x || {});
+  document.getElementById("sub").textContent = "آخر تحديث: " + new Date().toLocaleString("ar-KW", { timeZone: "Asia/Kuwait" }) + " · يتحدث كل دقيقة";
+  render();
+}
+document.querySelector(".bar").addEventListener("click", e => { const b = e.target.closest("button"); if (!b) return; range = b.dataset.r; document.querySelectorAll(".bar button").forEach(x => x.classList.toggle("on", x === b)); render(); });
+document.getElementById("q").addEventListener("input", render);
+document.getElementById("places").addEventListener("click", e => { const t = e.target.closest("th[data-c]"); if (t) { sortCol = t.dataset.c; render(); } });
+load(); setInterval(load, 60000);
+</script>
+</body>
+</html>

@@ -576,7 +576,15 @@ if (GA_ID) {
   gtag("js", new Date());
   gtag("config", GA_ID);
 }
-const track = (name, params) => { try { if (GA_ID) gtag("event", name, params || {}); } catch (e) {} };
+// عدّاد دائم لكل مكان (Firebase): كم مرة انفتح، المنيو، الخريطة، الانستقرام... ينحفظ مجموع + يومي
+const STATS_DB = "https://pov-guide-cbbc4-default-rtdb.europe-west1.firebasedatabase.app";
+const STAT_KEY = { place_open:"place", place_menu:"place", place_instagram:"place", place_map_open:"place", map_pin_open:"place", category_select:"category", section_view:"category", map_filter:"category", search:"search_term", search_no_results:"search_term", map_open:"source", social_click:"platform" };
+const statHit = (name, params) => { const f = STAT_KEY[name]; if (!f || !STATS_DB || !GA_ID) return;
+  const k = String((params || {})[f] || "all").trim().replace(/[.$#\[\]\/]/g, "_").slice(0, 80); if (!k) return;
+  const d = new Date(Date.now() + 3 * 3600e3).toISOString().slice(0, 10), body = JSON.stringify({ ".sv": { increment: 1 } }), p = "/" + name + "/" + encodeURIComponent(k) + ".json";
+  fetch(STATS_DB + "/stats" + p, { method: "PUT", body, keepalive: true }).catch(() => {});
+  fetch(STATS_DB + "/daily/" + d + p, { method: "PUT", body, keepalive: true }).catch(() => {}); };
+const track = (name, params) => { try { if (GA_ID) gtag("event", name, params || {}); } catch (e) {} try { statHit(name, params); } catch (e) {} };
 
 // ---------- الإعجابات (تنحفظ بجهاز الزائر) ----------
 let liked = new Set();
