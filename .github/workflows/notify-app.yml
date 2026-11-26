@@ -1,0 +1,20 @@
+# أول ما يتعدل الدليل، يبلّغ مستودع موقع ركاز عشان يحدّث بيانات التطبيق فوراً.
+# يحتاج سر باسم APP_SYNC_TOKEN (بدونه ما يسوي شي، والتحديث يبقى على الجدول كل 10 دقايق).
+name: Notify app
+on:
+  push:
+    branches: [main]
+    paths: [index.html]
+permissions: {}
+jobs:
+  notify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Signal rakaztech-site
+        env:
+          TOKEN: ${{ secrets.APP_SYNC_TOKEN }}
+        run: |
+          if [ -z "$TOKEN" ]; then echo "APP_SYNC_TOKEN not set, skipping"; exit 0; fi
+          curl -fsS -X POST https://api.github.com/repos/rakaztech/rakaztech-site/dispatches \
+            -H "authorization: Bearer $TOKEN" -H "accept: application/vnd.github+json" \
+            -d '{"event_type":"pov-guide-updated"}'
