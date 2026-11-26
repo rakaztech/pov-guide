@@ -2,6 +2,7 @@
 # يحتاج سر باسم APP_SYNC_TOKEN (بدونه ما يسوي شي، والتحديث يبقى على الجدول كل 10 دقايق).
 name: Notify app
 on:
+  workflow_dispatch:
   push:
     branches: [main]
     paths: [index.html]
